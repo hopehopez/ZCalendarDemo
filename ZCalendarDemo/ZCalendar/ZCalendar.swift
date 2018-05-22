@@ -8,20 +8,27 @@
 
 import UIKit
 
+@objc public protocol ZCalendarDelegate: NSObjectProtocol {
+    @objc optional func calendar(_ calendar: ZCalendar, didSelect date: Date?, forItemAt indexPath: IndexPath)
+    @objc optional func calendar(_ calendar: ZCalendar, current dateString: String)
+}
+
 @IBDesignable
 public final class ZCalendar: UICollectionView {
 
-    @IBInspectable public var isHiddenOtherMonth = false
-    @IBInspectable public var sectionSpace: CGFloat = 1.5
-    @IBInspectable public var cellSpace: CGFloat = 0.5
-    @IBInspectable public var weekCellHeight: CGFloat = 25
-    @IBInspectable public var currentDateFormat: String = "MM/yyyy"
-    @IBInspectable public var weekColor: UIColor = .black
-    @IBInspectable public var dayColor: UIColor = .gray
+    @IBInspectable public var isHiddenOtherMonth = true
+    @IBInspectable public var sectionSpace: CGFloat = 0
+    @IBInspectable public var cellSpace: CGFloat = 0
+    @IBInspectable public var weekCellHeight: CGFloat = 50
+    @IBInspectable public var currentDateFormat: String = "yyyy年MM月"
+    @IBInspectable public var weekColor: UIColor = .white
+    @IBInspectable public var dayColor: UIColor = .white
     @IBInspectable public var otherMonthColor: UIColor = .lightGray
     @IBInspectable public var weekBackgroundColor: UIColor = .white
     @IBInspectable public var dayBackgroundColor: UIColor = .white
     @IBInspectable public var holidayColor: UIColor = .red
+    
+    @IBInspectable public var calendarDelegate: ZCalendarDelegate?
     public var inset: UIEdgeInsets = .zero
     
     fileprivate  var model: ZDateModel = .init()
@@ -49,6 +56,16 @@ public final class ZCalendar: UICollectionView {
         register(ZCalendarCell.self, forCellWithReuseIdentifier: ZCalendarCell.identifier)
     }
     
+    public func currentDateString(withFormat format: String) -> String {
+        return model.dateString(in: .current, withFormat: format)
+    }
+    
+    public func display(in month: ZMonthType) {
+        model.display(in: month)
+        reloadData()
+        calendarDelegate?.calendar?(self, current: model.dateString(in: .current, withFormat: "yyyy年MM月"))
+    }
+    
 }
 
 extension ZCalendar: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -64,6 +81,23 @@ extension ZCalendar: UICollectionViewDelegate, UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ZCalendarCell.identifier, for: indexPath) as! ZCalendarCell
         config(cell: cell, at: indexPath)
         return cell
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard indexPath.section != 0 else {
+            return
+        }
+        
+        if isHiddenOtherMonth && model.isOtherMonth(at: indexPath) {
+            return
+        }
+        
+        model.select(with: indexPath)
+        
+        reloadData()
+        
+        calendarDelegate?.calendar!(self, didSelect: model.date(at: indexPath), forItemAt: indexPath)
+        
     }
     
     func config(cell: ZCalendarCell,at indexPath: IndexPath) {
@@ -96,12 +130,10 @@ extension ZCalendar: UICollectionViewDelegate, UICollectionViewDataSource {
                 }
             }()
             
-           content = model.dayString(at: indexPath, isHiddenOtherMonth: true)
+           content = model.dayString(at: indexPath, isHiddenOtherMonth: isHiddenOtherMonth)
         }
         
-        cell.content = content
-        cell.textColor = textColor
-        cell.isSelected = isSelected
+        cell.config(text: content, textColor: textColor, isSelected: isSelected)
     }
     
 }

@@ -96,6 +96,30 @@ final class ZDateModel: NSObject {
         }
     }
     
+    func display(in month: ZMonthType) {
+        currentDates.removeAll()
+        currentDate = month == .current ? Date() : date(of: month)
+        setUp()
+    }
+    
+    func select(with indexPath: IndexPath) {
+        let selectedDate  = date(at: indexPath)
+        
+        selectedDates.forEach { (date, isSelected) in
+            if selectedDate == date {
+                selectedDates[date] = !selectedDates[date]!
+            } else if isSelected {
+                selectedDates[date] = false
+            }
+        }
+    }
+    
+    func dateString(in month: ZMonthType, withFormat format: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = format
+        return formatter.string(from: date(of: .current))
+    }
+    
     func dayString(at indexPath: IndexPath, isHiddenOtherMonth isHidden: Bool) -> String {
         if isHidden && isOtherMonth(at: indexPath) {
             return ""
@@ -155,8 +179,4 @@ final class ZDateModel: NSObject {
         return calendar.date(byAdding: components, to: currentDate) ?? Date()
     }
     
-//    func indexAtBeginning(in month: ZMonthType) -> Int? {
-//
-//    }
-
 }

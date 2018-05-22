@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ffS-3N-jQe" customClass="ZCalendar" customModule="ZCalendarDemo" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="375" height="400"/>
+                                <rect key="frame" x="0.0" y="120" width="375" height="400"/>
                                 <color key="backgroundColor" red="0.66274509800000003" green="0.26274509800000001" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="400" id="k2K-o2-hbN"/>
@@ -52,15 +52,43 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Mt-aT-RPg">
+                                <rect key="frame" x="26" y="70" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="上一月"/>
+                                <connections>
+                                    <action selector="last:" destination="BYZ-38-t0r" eventType="touchUpInside" id="z6U-SP-DLF"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R8g-eS-fhE">
+                                <rect key="frame" x="297" y="70" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="下一月"/>
+                                <connections>
+                                    <action selector="next:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CVi-Zl-nmG"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I9p-Wv-f8f">
+                                <rect key="frame" x="166" y="74" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.4237369090048122" green="1" blue="0.52571448791788111" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ffS-3N-jQe" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Pkq-Sw-Za8"/>
+                            <constraint firstItem="ffS-3N-jQe" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="Pkq-Sw-Za8"/>
+                            <constraint firstItem="I9p-Wv-f8f" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Ubg-y1-Q4p"/>
                             <constraint firstItem="ffS-3N-jQe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="gk2-P3-wmP"/>
+                            <constraint firstItem="ffS-3N-jQe" firstAttribute="top" secondItem="I9p-Wv-f8f" secondAttribute="bottom" constant="25" id="tkH-W6-Qmg"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ffS-3N-jQe" secondAttribute="trailing" id="x0k-jQ-Cuc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="calendar" destination="ffS-3N-jQe" id="PIM-yo-x3N"/>
+                        <outlet property="dateLb" destination="I9p-Wv-f8f" id="wt8-yQ-OKH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
